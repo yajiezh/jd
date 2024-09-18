@@ -1,0 +1,70 @@
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>京东秒送商家二维码生成器</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        input {
+            padding: 0.5rem;
+            font-size: 1rem;
+            margin-right: 0.5rem;
+        }
+        button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #qrcode {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>京东秒送商家二维码</h1>
+        <input type="number" id="inputNumber" placeholder="请输入数字">
+        <button onclick="generateQRCode()">生成二维码</button>
+        <div id="qrcode"></div>
+    </div>
+
+    <script>
+        function generateQRCode() {
+            var number = document.getElementById('inputNumber').value;
+            var url = `https://mini-app-static.jd.com/apps/mpshare/index.html?category=jump&des=jdmp&vapptype=1&appId=${number}&param={"venderId":${number},"source":"qrCode","skuId":""}`;
+            
+            var qr = qrcode(0, 'M');
+            qr.addData(url);
+            qr.make();
+
+            document.getElementById('qrcode').innerHTML = qr.createImgTag(5);
+        }
+    </script>
+</body>
+</html>
