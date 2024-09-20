@@ -28,18 +28,19 @@
             padding: 0.5rem;
             font-size: 1rem;
             margin-right: 0.5rem;
+            width: 200px;
         }
         button {
             padding: 0.5rem 1rem;
             font-size: 1rem;
-            background-color: #4CAF50;
+            background-color: #e2231a;
             color: white;
             border: none;
             cursor: pointer;
             transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #c41d1b;
         }
         #qrcode {
             margin-top: 2rem;
@@ -49,7 +50,7 @@
 <body>
     <div class="container">
         <h1>京东秒送商家二维码</h1>
-        <input type="number" id="inputNumber" placeholder="请输入数字">
+        <input type="number" id="inputNumber" placeholder="请输入京东店铺ID">
         <button onclick="generateQRCode()">生成二维码</button>
         <div id="qrcode"></div>
     </div>
@@ -63,7 +64,32 @@
             qr.addData(url);
             qr.make();
 
-            document.getElementById('qrcode').innerHTML = qr.createImgTag(5);
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+            var size = qr.getModuleCount() * 5;
+            canvas.width = size;
+            canvas.height = size;
+
+            // 绘制二维码
+            var imgData = ctx.createImageData(size, size);
+            qr.renderTo2dContext(ctx, 5);
+
+            // 加载logo
+            var logo = new Image();
+            logo.onload = function() {
+                // 计算logo大小和位置
+                var logoSize = size * 0.3;
+                var logoX = (size - logoSize) / 2;
+                var logoY = (size - logoSize) / 2;
+
+                // 绘制logo
+                ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
+
+                // 显示结果
+                document.getElementById('qrcode').innerHTML = '';
+                document.getElementById('qrcode').appendChild(canvas);
+            };
+            logo.src = '1.jpg'; // 使用"1.jpg"作为logo
         }
     </script>
 </body>
